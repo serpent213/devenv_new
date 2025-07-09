@@ -1,51 +1,100 @@
-# devenv_new
+# devenv.new
 
-Find additions to dependency's CHANGELOG files upon update and accumulate them in
-a new `deps.CHANGELOG.md`.
+A Mix archive that wraps any Elixir project generator with [devenv.sh](https://devenv.sh) environment setup.
 
 ## Installation
 
-If not [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `deps_changelog` to your list of dependencies in `mix.exs`:
+Install the archive directly from this repository:
 
-```elixir
-def deps do
-  [
-    {:deps_changelog,
-      git: "https://github.com/serpent213/deps_changelog.git",
-      branch: "master",
-      only: :dev}
-  ]
-end
+```bash
+mix archive.install git https://github.com/your-username/devenv_new.git
 ```
 
 ## Usage
 
-Run `mix deps.changelog igniter.upgrade [...]` instead of `mix igniter.upgrade`. Run `mix
-igniter.upgrade` instead of `mix deps.update`. File `deps.CHANGELOG.md` will be created
-or updated when package updates happen.
+Use `mix devenv.new` to wrap any Mix project generator:
 
-Add to your `mix.exs`:
+```bash
+# Create a Phoenix project with devenv
+mix devenv.new phx.new my_app --devenv postgres,redis
 
-```elixir
-  defp aliases do
-    [
-      update: ["deps.changelog igniter.upgrade"]
-    ]
-  end
+# Create an Igniter project with devenv  
+mix devenv.new igniter.new my_project --devenv elixir=1.17,postgres --install ash,ash_postgres
+
+# Create a basic Elixir project with devenv
+mix devenv.new new my_lib --devenv elixir=1.17,minio --sup
 ```
 
-## Debugging
+## Devenv Features
 
-```
-$ iex --dbg pry -S mix
-iex> break! Mix.Tasks.Deps.Changelog.run/1
-iex> break! Mix.Tasks.Deps.Changelog.after_update/2
-iex> Mix.Task.run "deps.changelog", ["deps.update", "--all"]
+Available devenv features:
+
+* **elixir** - Elixir runtime (supports version specification, e.g., `elixir=1.17`)
+* **postgres** - PostgreSQL database with project-specific databases
+* **redis** - Redis cache/session store
+* **minio** - MinIO object storage (S3-compatible)
+* **npm** - Node.js runtime with npm
+* **bun** - Bun runtime/package manager
+
+## Examples
+
+### Phoenix with PostgreSQL and Redis
+```bash
+mix devenv.new phx.new my_phoenix_app --devenv postgres,redis
+cd my_phoenix_app
+devenv shell  # or use direnv
 ```
 
-<!--
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/deps_changelog>.
--->
+### Igniter with Ash and PostgreSQL
+```bash
+mix devenv.new igniter.new my_ash_app --devenv elixir=1.17,postgres --install ash,ash_postgres
+```
+
+### Basic Elixir Library with MinIO
+```bash
+mix devenv.new new my_lib --devenv elixir=1.17,minio --sup
+```
+
+## How it Works
+
+1. Runs the specified Mix task (e.g., `phx.new`, `igniter.new`, `new`)
+2. Initializes devenv in the created project directory
+3. Generates `devenv.nix` with requested features
+4. Creates project-specific database configurations when applicable
+
+## Developer Instructions
+
+### Installing Archive Locally
+
+For development, install the archive from your local checkout:
+
+```bash
+# Clone and build the archive
+git clone https://github.com/your-username/devenv_new.git
+cd devenv_new
+mix archive.build
+mix archive.install devenv_new-*.ez --force
+
+# Test the installation
+mix devenv.new --help
+```
+
+### Rebuilding After Changes
+
+```bash
+# Rebuild and reinstall
+mix archive.build
+mix archive.install devenv_new-*.ez --force
+```
+
+### Uninstalling
+
+```bash
+mix archive.uninstall devenv_new
+```
+
+## Requirements
+
+- Elixir/Mix installed
+- [devenv.sh](https://devenv.sh/getting-started/) installed
+- The target project generator (e.g., `phx.new`, `igniter.new`) available

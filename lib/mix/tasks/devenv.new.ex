@@ -1,5 +1,5 @@
-defmodule Mix.Tasks.Igniter.Devenv.New do
-  @shortdoc "Creates a new Igniter application with devenv development environment"
+defmodule Mix.Tasks.Devenv.New do
+  @shortdoc "Creates a new project with devenv development environment"
   use Mix.Task
 
   @devenv_options %{
@@ -49,11 +49,11 @@ defmodule Mix.Tasks.Igniter.Devenv.New do
               end).()
 
   @moduledoc """
-  Creates a new project using `mix igniter.new`, then sets up development environment.
+  Creates a new project using any Mix project generator, then sets up development environment.
 
   ## Options
 
-  All options are passed through to `mix igniter.new`, except for the following:
+  All options are passed through to the specified task, except for the following:
 
   * `--devenv` - A comma-separated list of devenv types and feature selectors
 
@@ -61,24 +61,46 @@ defmodule Mix.Tasks.Igniter.Devenv.New do
 
   #{@help_text}
 
-  ## Example
+  ## Examples
 
-      nix shell nixpkgs#elixir -c mix igniter.devenv.new my_project --devenv elixir=1.17,postgres --install ash,ash_postgres --with phx.new
+      # Create a Phoenix project with devenv
+      mix devenv.new phx.new my_app --devenv postgres,redis
+
+      # Create an Igniter project with devenv
+      mix devenv.new igniter.new my_project --devenv elixir=1.17,postgres --install ash,ash_postgres
+
+      # Create a basic Elixir project with devenv
+      mix devenv.new new my_lib --devenv elixir=1.17,minio --sup
 
   This will:
-  1. Create a new Phoenix project with Ash packages
+  1. Create a new project using the specified generator
   2. Initialize devenv in the project
-  3. Configure devenv.nix with Elixir 1.17 and PostgreSQL, ready to connect
+  3. Configure devenv.nix with requested features
   """
 
   @impl Mix.Task
-  def run(argv) do
+  def run([]) do
+    show_error_and_exit("""
+    Required argument missing: embedded_task.
+
+    Usage:
+
+        mix devenv.new embedded_task project_name [options]
+
+    Examples:
+
+        mix devenv.new phx.new my_app --devenv postgres,redis
+        mix devenv.new igniter.new my_app --devenv elixir=1.17,minio
+    """)
+  end
+
+  def run([embedded_task | argv]) do
     {project_name, remaining_argv} = extract_project_name(argv)
-    {devenv_options, igniter_argv} = extract_devenv_option(remaining_argv)
+    {devenv_options, task_argv} = extract_devenv_option(remaining_argv)
     {devenv_type, features} = parse_and_validate_devenv_options(devenv_options)
 
-    Mix.shell().info("Creating project with igniter.new...")
-    Mix.Task.run("igniter.new", [project_name | igniter_argv])
+    Mix.shell().info("Creating project with #{embedded_task}...")
+    Mix.Task.run(embedded_task, [project_name | task_argv])
     # ...leaves us in the newly created directory
 
     Mix.shell().info("Initializing devenv...")
@@ -207,7 +229,7 @@ defmodule Mix.Tasks.Igniter.Devenv.New do
 
         Usage:
 
-            mix igniter.devenv.new project_name [options]
+            mix devenv.new embedded_task project_name [options]
         """)
     end
   end
