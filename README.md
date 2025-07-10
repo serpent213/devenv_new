@@ -7,7 +7,7 @@ A Mix archive that wraps any Elixir project generator with [devenv.sh](https://d
 Install the archive directly from this repository:
 
 ```bash
-mix archive.install git https://github.com/your-username/devenv_new.git
+mix archive.install git https://github.com/serpent213/devenv_new.git
 ```
 
 ## Usage
@@ -18,11 +18,19 @@ Use `mix devenv.new` to wrap any Mix project generator:
 # Create a Phoenix project with devenv
 mix devenv.new phx.new my_app --devenv postgres,redis
 
-# Create an Igniter project with devenv  
+# Create an Igniter project with devenv
 mix devenv.new igniter.new my_project --devenv elixir=1.17,postgres --install ash,ash_postgres
 
 # Create a basic Elixir project with devenv
 mix devenv.new new my_lib --devenv elixir=1.17,minio --sup
+
+# To run Mix in a temporary Elixir Nix environment
+nix-shell -p elixir --run 'mix devenv.new igniter.new demo_app
+  --devenv postgres,bun
+  --install ash,ash_postgres,ash_authentication_phoenix,ash_graphql
+  --auth-strategy magic_link
+  --with phx.new
+'
 ```
 
 ## Devenv Features

@@ -3,46 +3,26 @@ defmodule Mix.Tasks.Devenv.New do
   use Mix.Task
 
   @devenv_options %{
-    devenv: %{
-      elixir: "Elixir version to use",
-      bun: "Install Bun runtime/package manager",
-      minio: "MinIO object storage (S3-compatible)",
-      npm: "Node.js runtime with npm",
-      postgres: "PostgreSQL database",
-      redis: "Redis cache/session store"
-    }
+    elixir: "Elixir version to use",
+    bun: "Install Bun runtime/package manager",
+    minio: "MinIO object storage (S3-compatible)",
+    npm: "Node.js runtime with npm",
+    postgres: "PostgreSQL database",
+    redis: "Redis cache/session store"
   }
 
   @help_text (fn ->
-                devenv_types =
-                  @devenv_options
-                  |> Map.keys()
-                  |> Enum.sort()
-                  |> Enum.map(&"  * #{&1}")
-                  |> Enum.join("\n")
-
-                feature_sections =
+                feature_list =
                   @devenv_options
                   |> Enum.sort_by(fn {k, _} -> k end)
-                  |> Enum.map(fn {devenv_type, features} ->
-                    feature_list =
-                      features
-                      |> Enum.sort_by(fn {k, _} -> k end)
-                      |> Enum.map(fn {feature, description} ->
-                        "    * #{feature} - #{description}"
-                      end)
-                      |> Enum.join("\n")
-
-                    "  * for #{devenv_type}:\n#{feature_list}"
+                  |> Enum.map(fn {feature, description} ->
+                    "    * #{feature} - #{description}"
                   end)
-                  |> Enum.join("\n\n")
+                  |> Enum.join("\n")
 
                 """
-                Valid devenv type selectors:
-                #{devenv_types}
-
                 Valid feature selectors:
-                #{feature_sections}
+                #{feature_list}
 
                 Features can include version specifiers, e.g., elixir=1.17
                 """
@@ -55,7 +35,7 @@ defmodule Mix.Tasks.Devenv.New do
 
   All options are passed through to the specified task, except for the following:
 
-  * `--devenv` - A comma-separated list of devenv types and feature selectors
+  * `--devenv` - A comma-separated list of feature selectors
 
   ## Selectors
 
@@ -97,7 +77,7 @@ defmodule Mix.Tasks.Devenv.New do
   def run([embedded_task | argv]) do
     {project_name, remaining_argv} = extract_project_name(argv)
     {devenv_options, task_argv} = extract_devenv_option(remaining_argv)
-    {devenv_type, features} = parse_and_validate_devenv_options(devenv_options)
+    features = parse_and_validate_devenv_options(devenv_options)
 
     Mix.shell().info("Creating project with #{embedded_task}...")
     Mix.Task.run(embedded_task, [project_name | task_argv])
@@ -126,7 +106,7 @@ defmodule Mix.Tasks.Devenv.New do
 
     Mix.shell().info("""
 
-    Project #{project_name} created successfully with #{devenv_type}!
+    Project #{project_name} created successfully!
 
     To get started:
 
@@ -143,46 +123,19 @@ defmodule Mix.Tasks.Devenv.New do
     devenv_string = Keyword.get(devenv_options, :devenv, "")
 
     if devenv_string == "" do
-      # Default: devenv type with elixir feature
-      {"devenv", %{"elixir" => {true, nil}}}
+      # Default: elixir feature only
+      %{"elixir" => {true, nil}}
     else
-      items =
+      features =
         devenv_string
         |> String.split(",", trim: true)
         |> Enum.map(&String.trim/1)
-
-      # Separate devenv types from features
-      devenv_types = Map.keys(@devenv_options) |> Enum.map(&Atom.to_string/1)
-      {types, features} = Enum.split_with(items, &(&1 in devenv_types))
-
-      # Validate only one devenv type
-      devenv_type =
-        case types do
-          [] ->
-            "devenv"
-
-          [type] ->
-            type
-
-          multiple ->
-            show_error_and_exit("""
-            Only one devenv type can be specified, got: #{Enum.join(multiple, ", ")}
-
-            #{@help_text}
-            """)
-        end
-
-      # Parse features with optional versions
-      parsed_features =
-        features
         |> Enum.map(&parse_feature/1)
-        |> validate_features(devenv_type)
+        |> validate_features()
         |> Map.new(fn {name, version} -> {name, {true, version}} end)
 
       # Ensure elixir is included
-      final_features = Map.put_new(parsed_features, "elixir", {true, nil})
-
-      {devenv_type, final_features}
+      Map.put_new(features, "elixir", {true, nil})
     end
   end
 
@@ -193,16 +146,13 @@ defmodule Mix.Tasks.Devenv.New do
     end
   end
 
-  defp validate_features(features, devenv_type) do
-    devenv_key = String.to_atom(devenv_type)
-
-    valid_features =
-      Map.get(@devenv_options, devenv_key, %{}) |> Map.keys() |> Enum.map(&Atom.to_string/1)
+  defp validate_features(features) do
+    valid_features = Map.keys(@devenv_options) |> Enum.map(&Atom.to_string/1)
 
     Enum.each(features, fn {name, _version} ->
       unless name in valid_features do
         show_error_and_exit("""
-        Invalid feature selector for #{devenv_type}: #{name}
+        Invalid feature selector: #{name}
 
         #{@help_text}
         """)
