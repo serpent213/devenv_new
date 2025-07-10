@@ -79,7 +79,10 @@ defmodule DevenvNew.MixProject do
       name: "devenv_new",
       maintainers: ["Steffen Beyer"],
       licenses: ["0BSD"],
-      links: %{"GitHub" => "https://github.com/serpent213/devenv_new"}
+      links: %{
+        "Changelog" => "https://github.com/serpent213/devenv_new/blob/master/CHANGELOG.md",
+        "GitHub" => "https://github.com/serpent213/devenv_new"
+      }
     ]
   end
 end
