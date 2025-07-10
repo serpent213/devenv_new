@@ -294,8 +294,10 @@ defmodule Mix.Tasks.Devenv.New do
     case :code.priv_dir(:devenv_new) do
       {:error, :bad_name} ->
         # Fallback for Mix archive - use relative path from this file
+        # Is there a better way...?
         Path.join([
           Path.dirname(__ENV__.file),
+          "..",
           "..",
           "..",
           "priv",
