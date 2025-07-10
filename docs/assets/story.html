@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="utf-8">
 <title>devenv.new project generation log</title>
 <style type="text/css">
 body {background-color: black;}
@@ -47,11 +48,17 @@ b.BWHI {background-color: #aaaaaa}
 </style>
 </head>
 <body>
-<pre>$ nix-shell -p elixir --run 'mix devenv.new igniter.new demo_app '\&crarr;
-'--devenv postgres,bun '\&crarr;
-'--install ash,ash_postgres,ash_graphql '\&crarr;
-'--auth-strategy magic_link '\&crarr;
-'--with phx.new'&crarr;
+<pre>$ <b class=HIR>which elixir</b>&crarr;
+elixir not found
+
+$ <b class=HIR>which mix</b>&crarr;
+mix not found
+
+$ <b class=HIR>nix-shell -p elixir --run 'mix devenv.new igniter.new demo_app '\</b>&crarr;
+<b class=HIR>'--devenv postgres,bun '\</b>&crarr;
+<b class=HIR>'--install ash,ash_postgres,ash_graphql '\</b>&crarr;
+<b class=HIR>'--auth-strategy magic_link '\</b>&crarr;
+<b class=HIR>'--with phx.new'</b>&crarr;
 fetching path input 'path:/nix/store/kxxnzyhr1sbm5jjm3pvysi08wzsw0k2g-source'
 Creating project with igniter.new...
 <b class=GRN>* creating </b>demo_app/lib/demo_app/application.ex
@@ -365,6 +372,261 @@ To get started:
     devenv shell   # unless you have direnv installed
 
 Enabled features: bun, elixir, postgres
+
+$ <b class=HIR>cd demo_app</b>&crarr;
+direnv: loading /private/tmp/demo_app/.envrc
+direnv: using devenv
+• Building shell ...
+<b class=HIM>warning:</b> creating lock file '/private/tmp/demo_app/devenv.lock'
+• Using Cachix: devenv
+✔ Building shell in 6.64s
+Running tasks     <b class="BOLD">devenv:enterShell</b>
+<b class=GRN></b><b class=HIG>Succeeded        </b> <b class="BOLD">devenv:enterShell                       </b> 11ms
+1 <b class=GRN></b><b class=HIG>Succeeded</b>                         11.27ms
+✨ devenv 1.6.1 is out of date. Please update to 1.7: https://devenv.sh/getting-started/#installation
+direnv: export +AR +AS +CC +CONFIG_SHELL +CXX +DEVELOPER_DIR +DEVENV_DIRENVRC_ROLLING_UPGRADE +DEVENV_DIRENVRC_VERSION +DEVENV_DOTFILE +DEVENV_PROFILE +DEVENV_ROOT +DEVENV_RUNTIME +DEVENV_STATE +DEVENV_TASKS +IN_NIX_SHELL +LD +LD_DYLD_PATH +MACOSX_DEPLOYMENT_TARGET +NIX_APPLE_SDK_VERSION +NIX_BINTOOLS +NIX_BINTOOLS_WRAPPER_TARGET_HOST_arm64_apple_darwin +NIX_CC +NIX_CC_WRAPPER_TARGET_HOST_arm64_apple_darwin +NIX_CFLAGS_COMPILE +NIX_DONT_SET_RPATH +NIX_DONT_SET_RPATH_FOR_BUILD +NIX_ENFORCE_NO_NATIVE +NIX_HARDENING_ENABLE +NIX_IGNORE_LD_THROUGH_GCC +NIX_LDFLAGS +NIX_NO_SELF_RPATH +NIX_PKG_CONFIG_WRAPPER_TARGET_HOST_arm64_apple_darwin +NIX_STORE +NM +NODE_PATH +OBJCOPY +OBJDUMP +PATH_LOCALE +PC_CONFIG_FILES +PC_SOCKET_PATH +PGDATA +PGHOST +PGPORT +PKG_CONFIG +PKG_CONFIG_PATH +RANLIB +SDKROOT +SIZE +SOURCE_DATE_EPOCH +STRINGS +STRIP +ZERO_AR_DATE +__darwinAllowLocalNetworking +__impureHostDeps +__propagatedImpureHostDeps +__propagatedSandboxProfile +__sandboxProfile +cmakeFlags +configureFlags +hardeningDisable +mesonFlags +name +system ~PATH ~XDG_DATA_DIRS
+
+$ <b class=HIR>devenv up</b>&crarr;
+<b class=HIB>•</b> Building processes ...
+<b class=HIB>•</b> Using Cachix: devenv
+<b class=GRN>✔</b> Building processes in 2.09s
+<b class=HIB>•</b> Starting processes ...
+<b class=HIB>•</b> Building shell ...
+<b class=GRN>✔</b> Building shell in 42.5ms
+Running tasks     <b>devenv:enterShell</b>
+
+<b class=GRN>Succeeded</b>         <b>devenv:enterShell</b>                        8ms
+1 <b class=GRN>Succeeded</b>                         8.84ms
+
+<i>[ Process Compose monitor TUI spins up with PostgreSQL ]</i>
+
+<i>[ In new shell: ]</i>
+
+$ <b class=HIR>mix test</b>&crarr;
+==&gt; sourceror
+Compiling 12 files (.ex)
+Generated sourceror app
+==&gt; text_diff
+Compiling 1 file (.ex)
+Generated text_diff app
+==&gt; stream_data
+Compiling 3 files (.ex)
+Generated stream_data app
+==&gt; floki
+Compiling 1 file (.xrl)
+Compiling 2 files (.erl)
+Compiling 30 files (.ex)
+Generated floki app
+==&gt; decimal
+Compiling 4 files (.ex)
+Generated decimal app
+==&gt; spitfire
+Compiling 2 files (.erl)
+Compiling 4 files (.ex)
+Generated spitfire app
+==&gt; ymlr
+Compiling 3 files (.ex)
+Generated ymlr app
+==&gt; mime
+Compiling 1 file (.ex)
+Generated mime app
+==&gt; nimble_options
+Compiling 3 files (.ex)
+Generated nimble_options app
+==&gt; libgraph
+Compiling 15 files (.ex)
+Generated libgraph app
+==&gt; nimble_parsec
+Compiling 4 files (.ex)
+Generated nimble_parsec app
+==&gt; demo_app
+===&gt; Analyzing applications...
+===&gt; Compiling telemetry
+==&gt; telemetry_metrics
+Compiling 7 files (.ex)
+Generated telemetry_metrics app
+==&gt; demo_app
+===&gt; Analyzing applications...
+===&gt; Compiling telemetry_poller
+==&gt; thousand_island
+Compiling 16 files (.ex)
+Generated thousand_island app
+==&gt; jason
+Compiling 10 files (.ex)
+Generated jason app
+==&gt; esbuild
+Compiling 4 files (.ex)
+Generated esbuild app
+==&gt; phoenix_html
+Compiling 6 files (.ex)
+Generated phoenix_html app
+==&gt; phoenix_template
+Compiling 4 files (.ex)
+Generated phoenix_template app
+==&gt; db_connection
+Compiling 17 files (.ex)
+Generated db_connection app
+==&gt; expo
+Compiling 2 files (.erl)
+Compiling 22 files (.ex)
+Generated expo app
+==&gt; phoenix_pubsub
+Compiling 11 files (.ex)
+Generated phoenix_pubsub app
+==&gt; plug_crypto
+Compiling 5 files (.ex)
+Generated plug_crypto app
+==&gt; hpax
+Compiling 4 files (.ex)
+Generated hpax app
+==&gt; mint
+Compiling 1 file (.erl)
+Compiling 20 files (.ex)
+Generated mint app
+==&gt; demo_app
+===&gt; Analyzing applications...
+===&gt; Compiling yamerl
+==&gt; yaml_elixir
+Compiling 6 files (.ex)
+Generated yaml_elixir app
+==&gt; dns_cluster
+Compiling 1 file (.ex)
+Generated dns_cluster app
+==&gt; gettext
+Compiling 18 files (.ex)
+Generated gettext app
+==&gt; absinthe
+Compiling 1 file (.erl)
+Compiling 260 files (.ex)
+Generated absinthe app
+==&gt; splode
+Compiling 5 files (.ex)
+Generated splode app
+==&gt; glob_ex
+Compiling 4 files (.ex)
+Generated glob_ex app
+==&gt; ecto
+Compiling 56 files (.ex)
+Generated ecto app
+==&gt; ets
+Compiling 7 files (.ex)
+Generated ets app
+==&gt; plug
+Compiling 1 file (.erl)
+Compiling 40 files (.ex)
+Generated plug app
+==&gt; absinthe_plug
+Compiling 18 files (.ex)
+Generated absinthe_plug app
+==&gt; postgrex
+Compiling 68 files (.ex)
+Generated postgrex app
+==&gt; iterex
+Compiling 48 files (.ex)
+Generated iterex app
+==&gt; ecto_sql
+Compiling 25 files (.ex)
+Generated ecto_sql app
+==&gt; nimble_pool
+Compiling 2 files (.ex)
+Generated nimble_pool app
+==&gt; finch
+Compiling 14 files (.ex)
+Generated finch app
+==&gt; req
+Compiling 19 files (.ex)
+Generated req app
+==&gt; rewrite
+Compiling 13 files (.ex)
+Generated rewrite app
+==&gt; owl
+Compiling 19 files (.ex)
+Generated owl app
+==&gt; igniter
+Compiling 59 files (.ex)
+Generated igniter app
+==&gt; spark
+Compiling 38 files (.ex)
+Generated spark app
+==&gt; reactor
+Compiling 111 files (.ex)
+Generated reactor app
+==&gt; ash
+Compiling 529 files (.ex)
+Generated ash app
+==&gt; ash_sql
+Compiling 13 files (.ex)
+Generated ash_sql app
+==&gt; ash_postgres
+Compiling 56 files (.ex)
+     <b class=YEL>warning:</b> Igniter.Project.Config.modify_configuration_code/4 is deprecated. Use `modify_config_code/5`
+     │
+ 203 │                         |&gt; Igniter.Project.Config.modify_configuration_code(
+     │ <b class=YEL>                                                  ~</b>
+     │
+     └─ lib/mix/tasks/ash_postgres.install.ex:203:51: Mix.Tasks.AshPostgres.Install.configure_runtime/3
+     └─ lib/mix/tasks/ash_postgres.install.ex:208:51: Mix.Tasks.AshPostgres.Install.configure_runtime/3
+
+Generated ash_postgres app
+==&gt; tailwind
+Compiling 3 files (.ex)
+Generated tailwind app
+==&gt; websock
+Compiling 1 file (.ex)
+Generated websock app
+==&gt; bandit
+Compiling 54 files (.ex)
+Generated bandit app
+==&gt; swoosh
+Compiling 53 files (.ex)
+Generated swoosh app
+==&gt; websock_adapter
+Compiling 4 files (.ex)
+Generated websock_adapter app
+==&gt; phoenix
+Compiling 73 files (.ex)
+Generated phoenix app
+==&gt; absinthe_phoenix
+Compiling 9 files (.ex)
+    <b class=YEL>warning:</b> this clause of defp format_result/1 is never used
+    │
+ 28 │   defp format_result(:execution_failed) do
+    │ <b class=YEL>       ~</b>
+    │
+    └─ lib/absinthe/phoenix/controller/result.ex:28:8: Absinthe.Phoenix.Controller.Result.format_result/1
+
+    <b class=YEL>warning:</b> this clause of defp format_result/1 is never used
+    │
+ 46 │   defp format_result({:parse_failed, error}) do
+    │ <b class=YEL>       ~</b>
+    │
+    └─ lib/absinthe/phoenix/controller/result.ex:46:8: Absinthe.Phoenix.Controller.Result.format_result/1
+
+Generated absinthe_phoenix app
+==&gt; ash_graphql
+Compiling 47 files (.ex)
+Generated ash_graphql app
+==&gt; phoenix_live_view
+Compiling 39 files (.ex)
+Generated phoenix_live_view app
+==&gt; phoenix_live_dashboard
+Compiling 36 files (.ex)
+Generated phoenix_live_dashboard app
+==&gt; phoenix_ecto
+Compiling 7 files (.ex)
+Generated phoenix_ecto app
+==&gt; demo_app
+Compiling 19 files (.ex)
+Generated demo_app app
+Getting extensions in current project...
+Running setup for AshPostgres.DataLayer...
+Running ExUnit with seed: 375725, max_cases: 24
+
+<b class=GRN>.</b><b class=GRN>.</b><b class=GRN>.</b><b class=GRN>.</b><b class=GRN>.</b>
+Finished in 0.01 seconds (0.01s async, 0.00s sync)
+<b class=GRN>5 tests, 0 failures</b>
+
+$
 </pre>
 </body>
 </html>
