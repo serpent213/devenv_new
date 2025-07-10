@@ -1,6 +1,6 @@
 # devenv.new
 
-A Mix archive that wraps any Elixir project generator with [devenv.sh](https://devenv.sh) environment setup.
+A Mix task that wraps any Elixir Mix project generator in a [devenv.sh](https://devenv.sh) environment.
 
 ## Installation
 
@@ -37,7 +37,7 @@ MIX_ENV=test mix ash.reset
 mix test
 ```
 
-See [STORY.html](https://htmlpreview.github.io/?https://github.com/serpent213/devenv_new/blob/master/STORY.html) for a full log of a generator run.
+See [STORY.html](https://hexdocs.pm/devenv_new/assets/story.html) ([local](assets/STORY.html)) for a full log of a generator run.
 
 ## Devenv Features
 

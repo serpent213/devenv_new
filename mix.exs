@@ -27,6 +27,7 @@ defmodule DevenvNew.MixProject do
   defp docs do
     [
       main: "readme",
+      assets: %{"docs/assets" => "assets"},
       extras: [
         "README.md"
       ],
