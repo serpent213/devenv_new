@@ -1,0 +1,8 @@
+<%= if version do %>
+  languages.elixir = {
+    enable = true;
+    package = pkgs.elixir_<%= String.replace(version, ".", "_") %>;
+  };
+<% else %>
+  languages.elixir.enable = true;
+<% end %>

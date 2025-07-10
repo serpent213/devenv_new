@@ -1,0 +1,1 @@
+  services.redis.enable = true;

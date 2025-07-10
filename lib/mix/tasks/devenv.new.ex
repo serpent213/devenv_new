@@ -3,26 +3,39 @@ defmodule Mix.Tasks.Devenv.New do
   use Mix.Task
 
   @devenv_options %{
-    elixir: "Elixir version to use",
-    bun: "Install Bun runtime/package manager",
-    minio: "MinIO object storage (S3-compatible)",
-    npm: "Node.js runtime with npm",
-    postgres: "PostgreSQL database",
-    redis: "Redis cache/session store"
+    languages: %{
+      elixir: "Elixir version to use",
+      bun: "Install Bun runtime/package manager",
+      npm: "Node.js runtime with npm"
+    },
+    services: %{
+      minio: "MinIO object storage (S3-compatible)",
+      postgres: "PostgreSQL database",
+      redis: "Redis cache/session store"
+    }
   }
 
   @help_text (fn ->
-                feature_list =
+                feature_sections =
                   @devenv_options
                   |> Enum.sort_by(fn {k, _} -> k end)
-                  |> Enum.map(fn {feature, description} ->
-                    "    * #{feature} - #{description}"
+                  |> Enum.map(fn {category, features} ->
+                    feature_list =
+                      features
+                      |> Enum.sort_by(fn {k, _} -> k end)
+                      |> Enum.map(fn {feature, description} ->
+                        "    * #{feature} - #{description}"
+                      end)
+                      |> Enum.join("\n")
+
+                    "  #{String.capitalize(Atom.to_string(category))}:\n#{feature_list}"
                   end)
-                  |> Enum.join("\n")
+                  |> Enum.join("\n\n")
 
                 """
                 Valid feature selectors:
-                #{feature_list}
+
+                #{feature_sections}
 
                 Features can include version specifiers, e.g., elixir=1.17
                 """
@@ -147,7 +160,11 @@ defmodule Mix.Tasks.Devenv.New do
   end
 
   defp validate_features(features) do
-    valid_features = Map.keys(@devenv_options) |> Enum.map(&Atom.to_string/1)
+    valid_features =
+      @devenv_options
+      |> Enum.flat_map(fn {_category, features} ->
+        Map.keys(features) |> Enum.map(&Atom.to_string/1)
+      end)
 
     Enum.each(features, fn {name, _version} ->
       unless name in valid_features do
@@ -201,14 +218,18 @@ defmodule Mix.Tasks.Devenv.New do
   defp generate_devenv_nix(features, project_name) do
     language_configs =
       features
-      |> Enum.filter(fn {name, _} -> name in ["elixir", "npm", "bun"] end)
-      |> Enum.map(fn {name, {flag, version}} -> feature(name, flag, version, project_name) end)
+      |> get_features_by_category("languages")
+      |> Enum.map(fn {name, {_flag, version}} ->
+        render_feature_template("languages", name, version, project_name)
+      end)
       |> Enum.join("\n")
 
     service_configs =
       features
-      |> Enum.filter(fn {name, _} -> name in ["postgres", "minio", "redis"] end)
-      |> Enum.map(fn {name, {flag, version}} -> feature(name, flag, version, project_name) end)
+      |> get_features_by_category("services")
+      |> Enum.map(fn {name, {_flag, version}} ->
+        render_feature_template("services", name, version, project_name)
+      end)
       |> Enum.join("\n")
 
     """
@@ -240,96 +261,53 @@ defmodule Mix.Tasks.Devenv.New do
     """
   end
 
-  defp feature("elixir", true, nil, _project_name) do
-    """
-      languages.elixir.enable = true;
-    """
+  defp get_features_by_category(features, category) do
+    category_features =
+      @devenv_options
+      |> Map.get(String.to_atom(category), %{})
+      |> Map.keys()
+      |> Enum.map(&Atom.to_string/1)
+
+    features
+    |> Enum.filter(fn {name, _} -> name in category_features end)
   end
 
-  defp feature("elixir", true, version, _project_name) do
-    """
-      languages.elixir = {
-        enable = true;
-        package = pkgs.elixir_#{String.replace(version, ".", "_")};
-      };
-    """
+  defp render_feature_template(category, feature_name, version, project_name) do
+    template_path = find_template_path(category, feature_name)
+
+    unless File.exists?(template_path) do
+      show_error_and_exit("""
+      Template not found for #{category}/#{feature_name}
+
+      Expected template at: #{template_path}
+      """)
+    end
+
+    template_content = File.read!(template_path)
+    assigns = [version: version, project_name: project_name]
+    EEx.eval_string(template_content, assigns)
   end
 
-  defp feature("npm", true, nil, _project_name) do
-    """
-      languages.javascript = {
-        enable = true;
-        npm.enable = true;
-      };
-    """
-  end
+  defp find_template_path(category, feature_name) do
+    # Try :code.priv_dir first (works in development)
+    case :code.priv_dir(:devenv_new) do
+      {:error, :bad_name} ->
+        # Fallback for Mix archive - use relative path from this file
+        Path.join([
+          Path.dirname(__ENV__.file),
+          "..",
+          "..",
+          "priv",
+          category,
+          "#{feature_name}.eex"
+        ])
 
-  defp feature("npm", true, version, _project_name) do
-    """
-      languages.javascript = {
-        enable = true;
-        package = pkgs.nodejs_#{version};
-        npm.enable = true;
-      };
-    """
+      priv_dir when is_list(priv_dir) ->
+        # Normal case - convert charlist to string
+        priv_path = List.to_string(priv_dir)
+        Path.join([priv_path, category, "#{feature_name}.eex"])
+    end
   end
-
-  defp feature("bun", true, nil, _project_name) do
-    """
-      languages.javascript = {
-        enable = true;
-        bun.enable = true;
-      };
-    """
-  end
-
-  defp feature("postgres", true, nil, project_name) do
-    """
-      services.postgres = {
-        enable = true;
-        initialDatabases = [
-          { name = "#{project_name}_dev"; }
-          { name = "#{project_name}_test"; }
-        ];
-        initialScript = "CREATE USER postgres SUPERUSER;";
-      };
-    """
-  end
-
-  defp feature("postgres", true, version, project_name) do
-    """
-      services.postgres = {
-        enable = true;
-        package = pkgs.postgresql_#{version};
-        initialDatabases = [{ name = "#{project_name}_dev"; }];
-        initialScript = "CREATE USER postgres SUPERUSER;";
-      };
-    """
-  end
-
-  defp feature("minio", true, nil, _project_name) do
-    """
-      services.minio = {
-        enable = true;
-        accessKey = "minioadmin";
-        secretKey = "minioadmin";
-      };
-    """
-  end
-
-  defp feature("redis", true, nil, _project_name) do
-    """
-      services.redis.enable = true;
-    """
-  end
-
-  defp feature(feature, true, _version, _project_name) do
-    show_error_and_exit("""
-      Version cannot be specified for #{feature}.
-    """)
-  end
-
-  defp feature(_, _, _, _), do: ""
 
   defp show_error_and_exit(message) do
     Mix.shell().error(message)

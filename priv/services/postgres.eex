@@ -1,0 +1,20 @@
+<%= if version do %>
+  services.postgres = {
+    enable = true;
+    package = pkgs.postgresql_<%= version %>;
+    initialDatabases = [
+      { name = "<%= project_name %>_dev"; }
+      { name = "<%= project_name %>_test"; }
+    ];
+    initialScript = "CREATE USER postgres SUPERUSER;";
+  };
+<% else %>
+  services.postgres = {
+    enable = true;
+    initialDatabases = [
+      { name = "<%= project_name %>_dev"; }
+      { name = "<%= project_name %>_test"; }
+    ];
+    initialScript = "CREATE USER postgres SUPERUSER;";
+  };
+<% end %>

@@ -1,0 +1,12 @@
+<%= if version do %>
+  languages.javascript = {
+    enable = true;
+    package = pkgs.nodejs_<%= version %>;
+    npm.enable = true;
+  };
+<% else %>
+  languages.javascript = {
+    enable = true;
+    npm.enable = true;
+  };
+<% end %>
