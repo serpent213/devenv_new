@@ -37,7 +37,7 @@ MIX_ENV=test mix ash.reset
 mix test
 ```
 
-See [STORY.html](https://hexdocs.pm/devenv_new/assets/story.html) ([local](assets/STORY.html)) for a full log of a generator run.
+See [story.html](https://hexdocs.pm/devenv_new/assets/story.html) ([local](assets/story.html)) for a full log of a generator run.
 
 ## Devenv Features
 
