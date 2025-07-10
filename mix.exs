@@ -19,7 +19,7 @@ defmodule DevenvNew.MixProject do
   end
 
   defp description,
-    do: "Mix task wrapper to create projects in a new devenv.sh Nix environment"
+    do: "Mix task that wraps any Elixir Mix project generator in a devenv.sh Nix environment"
 
   defp elixirc_paths(:test), do: ["lib", "test/fixtures"]
   defp elixirc_paths(_), do: ["lib"]
