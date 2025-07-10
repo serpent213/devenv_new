@@ -290,25 +290,21 @@ defmodule Mix.Tasks.Devenv.New do
   end
 
   defp find_template_path(category, feature_name) do
-    # Try :code.priv_dir first (works in development)
-    case :code.priv_dir(:devenv_new) do
+    # :code.lib_dir/1 is the most robust way to find an app's root directory
+    # in any context (dev, deps, or mix archive).
+    case :code.lib_dir(:devenv_new) do
       {:error, :bad_name} ->
-        # Fallback for Mix archive - use relative path from this file
-        # Is there a better way...?
+        raise "Could not find the :devenv_new application in the code path."
+
+      app_dir ->
+        # app_dir is a charlist, so convert it to a string.
+        # Then, join it with "priv" and the rest of the path.
         Path.join([
-          Path.dirname(__ENV__.file),
-          "..",
-          "..",
-          "..",
+          to_string(app_dir),
           "priv",
           category,
           "#{feature_name}.eex"
         ])
-
-      priv_dir when is_list(priv_dir) ->
-        # Normal case - convert charlist to string
-        priv_path = List.to_string(priv_dir)
-        Path.join([priv_path, category, "#{feature_name}.eex"])
     end
   end
 
