@@ -25,13 +25,19 @@ mix devenv.new igniter.new my_project --devenv elixir=1.17,postgres --install as
 mix devenv.new new my_lib --devenv elixir=1.17,minio --sup
 
 # To run Mix in a temporary Elixir Nix environment
-nix-shell -p elixir --run 'mix devenv.new igniter.new demo_app
-  --devenv postgres,bun
-  --install ash,ash_postgres,ash_authentication_phoenix,ash_graphql
-  --auth-strategy magic_link
-  --with phx.new
-'
+nix-shell -p elixir --run 'mix devenv.new igniter.new demo_app '\
+'--devenv postgres,bun '\
+'--install ash,ash_postgres,ash_authentication_phoenix,ash_graphql '\
+'--auth-strategy magic_link '\
+'--with phx.new'
+
+cd demo_app
+devenv up
+MIX_ENV=test mix ash.reset
+mix test
 ```
+
+See [STORY.html](https://htmlpreview.github.io/?https://github.com/serpent213/devenv_new/blob/master/STORY.html) for a full log of a generator run.
 
 ## Devenv Features
 

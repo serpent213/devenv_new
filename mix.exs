@@ -10,7 +10,8 @@ defmodule DevenvNew.MixProject do
       consolidate_protocols: Mix.env() != :dev,
       deps: deps(),
       aliases: aliases(),
-      elixirc_paths: elixirc_paths(Mix.env())
+      elixirc_paths: elixirc_paths(Mix.env()),
+      package: package()
     ]
   end
 
@@ -46,6 +47,15 @@ defmodule DevenvNew.MixProject do
           )
         end
       ]
+    ]
+  end
+
+  defp package do
+    [
+      name: "devenv_new",
+      maintainers: ["Steffen Beyer"],
+      licenses: ["0BSD"],
+      links: %{"GitHub" => "https://github.com/serpent213/devenv_new"}
     ]
   end
 end

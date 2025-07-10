@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>devenv.new project generation log</title>
+<style type="text/css">
+body {background-color: black;}
+pre {
+	font-weight: normal;
+	color: #bbb;
+	white-space: -moz-pre-wrap;
+	white-space: -o-pre-wrap;
+	white-space: -pre-wrap;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+}
+b {font-weight: normal}
+b.BOLD {color: #fff}
+b.ITA {font-style: italic}
+b.UND {text-decoration: underline}
+b.STR {text-decoration: line-through}
+b.UNDSTR {text-decoration: underline line-through}
+b.BLK {color: #000000}
+b.RED {color: #aa0000}
+b.GRN {color: #00aa00}
+b.YEL {color: #aa5500}
+b.BLU {color: #0000aa}
+b.MAG {color: #aa00aa}
+b.CYN {color: #00aaaa}
+b.WHI {color: #aaaaaa}
+b.HIK {color: #555555}
+b.HIR {color: #ff5555}
+b.HIG {color: #55ff55}
+b.HIY {color: #ffff55}
+b.HIB {color: #5555ff}
+b.HIM {color: #ff55ff}
+b.HIC {color: #55ffff}
+b.HIW {color: #ffffff}
+b.BBLK {background-color: #000000}
+b.BRED {background-color: #aa0000}
+b.BGRN {background-color: #00aa00}
+b.BYEL {background-color: #aa5500}
+b.BBLU {background-color: #0000aa}
+b.BMAG {background-color: #aa00aa}
+b.BCYN {background-color: #00aaaa}
+b.BWHI {background-color: #aaaaaa}
+</style>
+</head>
+<body>
+<pre>$ nix-shell -p elixir --run 'mix devenv.new igniter.new demo_app '\&crarr;
+'--devenv postgres,bun '\&crarr;
+'--install ash,ash_postgres,ash_graphql '\&crarr;
+'--auth-strategy magic_link '\&crarr;
+'--with phx.new'&crarr;
+fetching path input 'path:/nix/store/kxxnzyhr1sbm5jjm3pvysi08wzsw0k2g-source'
+Creating project with igniter.new...
+<b class=GRN>* creating </b>demo_app/lib/demo_app/application.ex
+<b class=GRN>* creating </b>demo_app/lib/demo_app.ex
+<b class=GRN>* creating </b>demo_app/lib/demo_app_web/controllers/error_json.ex
+<b class=GRN>* creating </b>demo_app/lib/demo_app_web/endpoint.ex
+<b class=GRN>* creating </b>demo_app/lib/demo_app_web/router.ex
+<b class=GRN>* creating </b>demo_app/lib/demo_app_web/telemetry.ex
+<b class=GRN>* creating </b>demo_app/lib/demo_app_web.ex
+<b class=GRN>* creating </b>demo_app/mix.exs
+<b class=GRN>* creating </b>demo_app/README.md
+<b class=GRN>* creating </b>demo_app/.formatter.exs
+<b class=GRN>* creating </b>demo_app/.gitignore
+<b class=GRN>* creating </b>demo_app/test/support/conn_case.ex
+<b class=GRN>* creating </b>demo_app/test/test_helper.exs
+<b class=GRN>* creating </b>demo_app/test/demo_app_web/controllers/error_json_test.exs
+<b class=GRN>* creating </b>demo_app/lib/demo_app/repo.ex
+<b class=GRN>* creating </b>demo_app/priv/repo/migrations/.formatter.exs
+<b class=GRN>* creating </b>demo_app/priv/repo/seeds.exs
+<b class=GRN>* creating </b>demo_app/test/support/data_case.ex
+<b class=GRN>* creating </b>demo_app/lib/demo_app_web/controllers/error_html.ex
+<b class=GRN>* creating </b>demo_app/test/demo_app_web/controllers/error_html_test.exs
+<b class=GRN>* creating </b>demo_app/lib/demo_app_web/components/core_components.ex
+<b class=GRN>* creating </b>demo_app/lib/demo_app_web/controllers/page_controller.ex
+<b class=GRN>* creating </b>demo_app/lib/demo_app_web/controllers/page_html.ex
+<b class=GRN>* creating </b>demo_app/lib/demo_app_web/controllers/page_html/home.html.heex
+<b class=GRN>* creating </b>demo_app/test/demo_app_web/controllers/page_controller_test.exs
+<b class=GRN>* creating </b>demo_app/lib/demo_app_web/components/layouts/root.html.heex
+<b class=GRN>* creating </b>demo_app/lib/demo_app_web/components/layouts.ex
+<b class=GRN>* creating </b>demo_app/priv/static/images/logo.svg
+<b class=GRN>* creating </b>demo_app/lib/demo_app/mailer.ex
+<b class=GRN>* creating </b>demo_app/lib/demo_app_web/gettext.ex
+<b class=GRN>* creating </b>demo_app/priv/gettext/en/LC_MESSAGES/errors.po
+<b class=GRN>* creating </b>demo_app/priv/gettext/errors.pot
+<b class=GRN>* creating </b>demo_app/priv/static/robots.txt
+<b class=GRN>* creating </b>demo_app/priv/static/favicon.ico
+<b class=GRN>* creating </b>demo_app/assets/js/app.js
+<b class=GRN>* creating </b>demo_app/assets/vendor/topbar.js
+<b class=GRN>* creating </b>demo_app/assets/css/app.css
+<b class=GRN>* creating </b>demo_app/assets/vendor/heroicons.js
+<b class=GRN>* creating </b>demo_app/assets/vendor/daisyui.js
+<b class=GRN>* creating </b>demo_app/assets/vendor/daisyui-theme.js
+<b class=GRN>* running </b>mix deps.get
+<b class=GRN>* running </b>mix assets.setup
+<b class=GRN>* running </b>mix deps.compile
+
+We are almost there! The following steps are missing:
+
+    $ cd demo_app
+
+Then configure your database in config/dev.exs and run:
+
+    $ mix ecto.create
+
+Start your Phoenix app with:
+
+    $ mix phx.server
+
+You can also run your app inside IEx (Interactive Elixir) as:
+
+    $ iex -S mix phx.server
+
+Fetching and compiling dependencies <b class=GRN>✔</b>
+Updating project's igniter dependency <b class=GRN>✔</b>
+installing igniter <b class=GRN>✔</b>
+temporarily adding igniter <b class=GRN>✔</b>
+compiling igniter <b class=GRN>✔</b>
+setting up igniter <b class=GRN>✔</b>
+compiling ash, ash_postgres <b class=GRN>✔</b>
+`ash.install` <b class=GRN>✔</b>
+installing new dependencies <b class=GRN>✔</b>
+`ash_postgres.install` <b class=GRN>✔</b>
+
+<b class=GRN>The following installers were found and executed: `ash.install`, `ash_postgres.install`</b>:
+
+Update: .formatter.exs
+
+1 1   <b class=YEL>|</b>[
+2  <b class=RED> - </b><b class=YEL>|</b>  import_deps: [:ecto, :ecto_sql, :phoenix],
+  2<b class=GRN> + </b><b class=YEL>|</b>  import_deps: [:<b class=GRN>ash_postgres,</b><b class="BGRN"> </b><b class=GRN>:ash,</b><b class="BGRN"> </b><b class=GRN>:reactor,</b><b class="BGRN"> </b><b class=GRN>:</b>ecto, :ecto_sql, :phoenix],
+3 3   <b class=YEL>|</b>  subdirectories: ["priv/*/migrations"],
+4  <b class=RED> - </b><b class=YEL>|</b>  plugins: [Phoenix.LiveView.HTMLFormatter],
+  4<b class=GRN> + </b><b class=YEL>|</b>  plugins: [<b class=GRN>Spark.Formatter,</b><b class="BGRN"> </b><b class=GRN></b>Phoenix.LiveView.HTMLFormatter],
+5 5   <b class=YEL>|</b>  inputs: ["*.{heex,ex,exs}", "{config,lib,test}/**/*.{heex,ex,exs}", "priv/*/seeds.exs"]
+6 6   <b class=YEL>|</b>]
+   <b class=YEL>...</b><b class=YEL>|</b>
+
+
+Update: config/config.exs
+
+       <b class=YEL>...</b><b class=YEL>|</b>
+  8   8   <b class=YEL>|</b>import Config
+  9   9   <b class=YEL>|</b>
+     10<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>config :ash,</b>
+     11<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>  allow_forbidden_field_for_relationships_by_default?: true,</b>
+     12<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>  include_embedded_source_by_default?: false,</b>
+     13<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>  show_keysets_for_all_actions?: false,</b>
+     14<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>  default_page_type: :keyset,</b>
+     15<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>  policies: [no_filter_static_forbidden_reads?: false],</b>
+     16<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>  keep_read_action_loads_when_loading?: false,</b>
+     17<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>  default_actions_require_atomic?: true,</b>
+     18<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>  read_action_after_action_hooks_in_order?: true,</b>
+     19<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>  bulk_actions_default_to_errors?: true</b>
+     20<b class=GRN> + </b><b class=YEL>|</b><b class=GRN></b>
+     21<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>config :spark,</b>
+     22<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>  formatter: [</b>
+     23<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>    remove_parens?: true,</b>
+     24<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>    "Ash.Resource": [</b>
+     25<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>      section_order: [</b>
+     26<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>        :postgres,</b>
+     27<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>        :resource,</b>
+     28<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>        :code_interface,</b>
+     29<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>        :actions,</b>
+     30<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>        :policies,</b>
+     31<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>        :pub_sub,</b>
+     32<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>        :preparations,</b>
+     33<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>        :changes,</b>
+     34<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>        :validations,</b>
+     35<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>        :multitenancy,</b>
+     36<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>        :attributes,</b>
+     37<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>        :relationships,</b>
+     38<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>        :calculations,</b>
+     39<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>        :aggregates,</b>
+     40<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>        :identities</b>
+     41<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>      ]</b>
+     42<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>    ],</b>
+     43<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>    "Ash.Domain": [section_order: [:resources, :policies, :authorization, :domain, :execution]]</b>
+     44<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>  ]</b>
+     45<b class=GRN> + </b><b class=YEL>|</b><b class=GRN></b>
+ 10  46   <b class=YEL>|</b>config :demo_app,
+ 11  47   <b class=YEL>|</b>  ecto_repos: [DemoApp.Repo],
+       <b class=YEL>...</b><b class=YEL>|</b>
+
+
+Update: config/dev.exs
+
+ 1  1   <b class=YEL>|</b>import Config
+    2<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>config :ash, policies: [show_policy_breakdowns?: true]</b>
+ 2  3   <b class=YEL>|</b>
+ 3  4   <b class=YEL>|</b># Configure your database
+     <b class=YEL>...</b><b class=YEL>|</b>
+
+
+Update: config/test.exs
+
+ 1  1   <b class=YEL>|</b>import Config
+    2<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>config :ash, policies: [show_policy_breakdowns?: true]</b>
+ 2  3   <b class=YEL>|</b>
+ 3  4   <b class=YEL>|</b># Configure your database
+     <b class=YEL>...</b><b class=YEL>|</b>
+
+
+Update: lib/demo_app/repo.ex
+
+ 1  1   <b class=YEL>|</b>defmodule DemoApp.Repo do
+ 2   <b class=RED> - </b><b class=YEL>|</b><b class=RED>  use Ecto.Repo,</b>
+ 3   <b class=RED> - </b><b class=YEL>|</b><b class=RED>    otp_app: :demo_app,</b>
+ 4   <b class=RED> - </b><b class=YEL>|</b><b class=RED>    adapter: Ecto.Adapters.Postgres</b>
+    2<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>  use AshPostgres.Repo,</b>
+    3<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>    otp_app: :demo_app</b>
+    4<b class=GRN> + </b><b class=YEL>|</b><b class=GRN></b>
+    5<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>  @impl true</b>
+    6<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>  def installed_extensions do</b>
+    7<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>    # Add extensions here, and the migration generator will install them.</b>
+    8<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>    ["ash-functions"]</b>
+    9<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>  end</b>
+   10<b class=GRN> + </b><b class=YEL>|</b><b class=GRN></b>
+   11<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>  # Don't open unnecessary transactions</b>
+   12<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>  # will default to `false` in 4.0</b>
+   13<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>  @impl true</b>
+   14<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>  def prefer_transaction? do</b>
+   15<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>    false</b>
+   16<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>  end</b>
+   17<b class=GRN> + </b><b class=YEL>|</b><b class=GRN></b>
+   18<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>  @impl true</b>
+   19<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>  def min_pg_version do</b>
+   20<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>    %Version{major: 16, minor: 0, patch: 0}</b>
+   21<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>  end</b>
+ 5 22   <b class=YEL>|</b>end
+ 6 23   <b class=YEL>|</b>
+
+
+Update: mix.exs
+
+     <b class=YEL>...</b><b class=YEL>|</b>
+11 11   <b class=YEL>|</b>      aliases: aliases(),
+12 12   <b class=YEL>|</b>      deps: deps(),
+13   <b class=RED> - </b><b class=YEL>|</b><b class=RED>      listeners: [Phoenix.CodeReloader]</b>
+   13<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>      listeners: [Phoenix.CodeReloader],</b>
+   14<b class=GRN> + </b><b class=YEL>|</b><b class=GRN>      consolidate_protocols: Mix.env() != :dev</b>
+14 15   <b class=YEL>|</b>    ]
+15 16   <b class=YEL>|</b>  end
+     <b class=YEL>...</b><b class=YEL>|</b>
+75 76   <b class=YEL>|</b>  defp aliases do
+76 77   <b class=YEL>|</b>    [
+77   <b class=RED> - </b><b class=YEL>|</b>      setup: ["deps.get", "<b class=RED>ecto</b>.setup", "assets.setup", "assets.build"],
+   78<b class=GRN> + </b><b class=YEL>|</b>      setup: ["deps.get", "<b class=GRN>ash</b>.setup", "assets.setup", "assets.build"<b class=GRN>,</b><b class="BGRN"> </b><b class=GRN>"run</b><b class="BGRN"> </b><b class=GRN>priv/repo/seeds.exs"</b>],
+78 79   <b class=YEL>|</b>      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+79 80   <b class=YEL>|</b>      "ecto.reset": ["ecto.drop", "ecto.setup"],
+80   <b class=RED> - </b><b class=YEL>|</b>      test: ["<b class=RED>ecto</b>.<b class=RED>create</b> --quiet", "<b class=RED>ecto.migrate</b><b class="BRED"> </b><b class=RED>--quiet",</b><b class="BRED"> </b><b class=RED>"</b>test"],
+   81<b class=GRN> + </b><b class=YEL>|</b>      test: ["<b class=GRN>ash</b>.<b class=GRN>setup</b> --quiet", "test"],
+81 82   <b class=YEL>|</b>      "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
+82 83   <b class=YEL>|</b>      "assets.build": ["tailwind demo_app", "esbuild demo_app"],
+     <b class=YEL>...</b><b class=YEL>|</b>
+
+
+
+These tasks will be run after the above changes:
+
+* <b class=RED>ash.codegen </b><b class=YEL>initialize</b>
+
+Proceed with changes? [Y/n]
+Resolving Hex dependencies...
+Resolution completed in 0.189s
+Unchanged:
+  ash 3.5.26
+  ash_postgres 2.6.10
+  ash_sql 0.2.85
+  bandit 1.7.0
+  db_connection 2.8.0
+  decimal 2.3.0
+  dns_cluster 0.1.3
+  ecto 3.13.2
+  ecto_sql 3.13.2
+  esbuild 0.10.0
+  ets 0.9.0
+  expo 1.1.0
+  file_system 1.1.0
+  finch 0.20.0
+  floki 0.38.0
+  gettext 0.26.2
+  glob_ex 0.1.11
+  hpax 1.0.3
+  igniter 0.6.14
+  iterex 0.1.2
+  jason 1.4.4
+  libgraph 0.16.0
+  mime 2.0.7
+  mint 1.7.1
+  nimble_options 1.1.1
+  nimble_pool 1.1.0
+  owl 0.12.2
+  phoenix 1.8.0-rc.3
+  phoenix_ecto 4.6.5
+  phoenix_html 4.2.1
+  phoenix_live_dashboard 0.8.7
+  phoenix_live_reload 1.6.0
+  phoenix_live_view 1.0.17
+  phoenix_pubsub 2.1.3
+  phoenix_template 1.0.4
+  plug 1.18.1
+  plug_crypto 2.1.1
+  postgrex 0.20.0
+  reactor 0.15.6
+  req 0.5.14
+  rewrite 1.1.2
+  sourceror 1.10.0
+  spark 2.2.67
+  spitfire 0.2.1
+  splode 0.2.9
+  stream_data 1.2.0
+  swoosh 1.19.3
+  tailwind 0.3.1
+  telemetry 1.3.0
+  telemetry_metrics 1.1.0
+  telemetry_poller 1.3.0
+  text_diff 0.1.0
+  thousand_island 1.3.14
+  websock 0.5.3
+  websock_adapter 0.5.8
+  yamerl 0.10.0
+  yaml_elixir 2.11.0
+  ymlr 5.1.3
+All dependencies are up to date
+==&gt; ash
+Compiling 529 files (.ex)
+Generated ash app
+==&gt; demo_app
+Compiling 15 files (.ex)
+Generated demo_app app
+Getting extensions in current project...
+Running codegen for AshPostgres.DataLayer...
+* creating priv/resource_snapshots/repo/extensions.json
+* creating priv/repo/migrations/20250710115210_initialize_extensions_1.exs
+
+Notices:
+
+* <b class=GRN>A `min_pg_version/0` function has been defined in</b>
+  `DemoApp.Repo` automatically.
+
+  You may wish to update this configuration. It should
+  be set to the lowest version that your application
+  expects to be run against.
+
+
+<b class=YEL>Notices were printed above. Please read them all before continuing!</b>
+
+Successfully installed:
+
+* ash
+* ash_postgres
+Initializing devenv...
+devenv initialized successfully
+Configuring devenv.nix with Elixir and requested features...
+
+Project demo_app created successfully!
+
+To get started:
+
+    cd demo_app
+    devenv shell   # unless you have direnv installed
+
+Enabled features: bun, elixir, postgres
+</pre>
+</body>
+</html>
