@@ -19,18 +19,16 @@ defmodule Mix.Tasks.Devenv.New do
                 feature_sections =
                   @devenv_options
                   |> Enum.sort_by(fn {k, _} -> k end)
-                  |> Enum.map(fn {category, features} ->
+                  |> Enum.map_join("\n\n", fn {category, features} ->
                     feature_list =
                       features
                       |> Enum.sort_by(fn {k, _} -> k end)
-                      |> Enum.map(fn {feature, description} ->
+                      |> Enum.map_join("\n", fn {feature, description} ->
                         "    * #{feature} - #{description}"
                       end)
-                      |> Enum.join("\n")
 
                     "  #{String.capitalize(Atom.to_string(category))}:\n#{feature_list}"
                   end)
-                  |> Enum.join("\n\n")
 
                 """
                 Valid feature selectors:
@@ -67,7 +65,7 @@ defmodule Mix.Tasks.Devenv.New do
 
   This will:
   1. Create a new project using the specified generator
-  2. Initialize devenv in the project
+  2. Initialise devenv in the project
   3. Configure devenv.nix with requested features
   """
 
@@ -93,10 +91,15 @@ defmodule Mix.Tasks.Devenv.New do
     features = parse_and_validate_devenv_options(devenv_options)
 
     Mix.shell().info("Creating project with #{embedded_task}...")
+
+    # Protection against “random” errors like:
+    # (UndefinedFunctionError) function Hex.Mix.overridden_deps/1 is undefined (module Hex.Mix is not available)
+    Mix.ensure_application!(:hex)
+
     Mix.Task.run(embedded_task, [project_name | task_argv])
     # ...leaves us in the newly created directory
 
-    Mix.shell().info("Initializing devenv...")
+    Mix.shell().info("Initialising devenv...")
 
     case System.cmd("devenv", ["init"], stderr_to_stdout: true) do
       {_output, 0} ->
@@ -219,18 +222,16 @@ defmodule Mix.Tasks.Devenv.New do
     language_configs =
       features
       |> get_features_by_category("languages")
-      |> Enum.map(fn {name, {_flag, version}} ->
+      |> Enum.map_join("\n", fn {name, {_flag, version}} ->
         render_feature_template("languages", name, version, project_name)
       end)
-      |> Enum.join("\n")
 
     service_configs =
       features
       |> get_features_by_category("services")
-      |> Enum.map(fn {name, {_flag, version}} ->
+      |> Enum.map_join("\n", fn {name, {_flag, version}} ->
         render_feature_template("services", name, version, project_name)
       end)
-      |> Enum.join("\n")
 
     """
     {
