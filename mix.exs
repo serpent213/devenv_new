@@ -11,30 +11,53 @@ defmodule DevenvNew.MixProject do
       deps: deps(),
       aliases: aliases(),
       elixirc_paths: elixirc_paths(Mix.env()),
-      package: package()
+      description: description(),
+      package: package(),
+      name: "devenv_new",
+      docs: docs()
     ]
   end
+
+  defp description,
+    do: "Mix task wrapper to create projects in a new devenv.sh Nix environment"
 
   defp elixirc_paths(:test), do: ["lib", "test/fixtures"]
   defp elixirc_paths(_), do: ["lib"]
 
-  # Run "mix help compile.app" to learn about applications.
-  def application do
+  defp docs do
     [
-      extra_applications: [:logger]
+      main: "readme",
+      extras: [
+        "README.md"
+      ],
+      formatters: ["html"]
     ]
   end
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:igniter, "~> 0.5", only: [:dev]},
-      {:deps_changelog, github: "serpent213/deps_changelog", branch: "master", only: [:dev]}
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:ex_doc, "~> 0.27", only: :dev, runtime: false},
+      {:igniter, "~> 0.5", only: :dev, optional: true},
+      {:deps_changelog, "~> 0.3", only: :dev, optional: true, runtime: false}
     ]
   end
 
   defp aliases do
     [
+      ci: [
+        "format --check-formatted",
+        "deps.unlock --check-unused",
+        "credo",
+
+        # Order might be important,
+        # see https://elixirforum.com/t/cant-run-hex-mix-tasks-in-alias/65649/13
+        fn _ -> Mix.ensure_application!(:hex) end,
+        "hex.audit"
+      ],
+
+      # Mainly for testing deps_changelog and Igniter
       update: [
         # Isolated processes/Mix runners seem to work best when shuffling deps
         "cmd mix deps.changelog --before",
