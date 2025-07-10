@@ -4,7 +4,7 @@ defmodule DevenvNew.MixProject do
   def project do
     [
       app: :devenv_new,
-      version: "0.2.2",
+      version: "0.2.3",
       elixir: "~> 1.16",
       start_permanent: Mix.env() == :prod,
       consolidate_protocols: Mix.env() != :dev,
