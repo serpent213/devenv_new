@@ -4,10 +4,10 @@ A Mix archive that wraps any Elixir project generator with [devenv.sh](https://d
 
 ## Installation
 
-Install the archive directly from this repository:
+Install the archive [directly from Hex](https://hex.pm/packages/devenv_new):
 
 ```bash
-mix archive.install git https://github.com/serpent213/devenv_new.git
+mix archive.install hex devenv_new
 ```
 
 ## Usage
@@ -49,6 +49,9 @@ Available devenv features:
 * **minio** - MinIO object storage (S3-compatible)
 * **npm** - Node.js runtime with npm
 * **bun** - Bun runtime/package manager
+
+The generator is built to be [easily extendable](https://github.com/serpent213/devenv_new/tree/master/priv),
+by creating an `.eex` template file and adding it to the look-up table in `devenv.new.ex`.
 
 ## Examples
 
