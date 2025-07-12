@@ -9,10 +9,7 @@ defmodule Mix.Tasks.Test.Mock do
   def run(argv) do
     case argv do
       [project_name | _rest] ->
-        # Create project directory
         File.mkdir_p!(project_name)
-
-        # Change to project directory (like real generators do)
         File.cd!(project_name)
 
         # Create a minimal project structure

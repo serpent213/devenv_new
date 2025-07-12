@@ -12,17 +12,18 @@ defmodule DevenvNewTest do
       File.cd!(original_cwd)
     end)
 
-    %{original_cwd: original_cwd}
+    %{original_cwd: original_cwd, tmp_dir: tmp_dir}
   end
 
   describe "devenv.new wrapper" do
-    test "generates correct devenv.nix for elixir+postgres" do
+    test "generates correct devenv.nix for elixir+postgres", %{tmp_dir: tmp_dir} do
       project_name = "test_app"
 
       # Mock devenv init command success
-      with_mock_devenv_init(fn ->
+      with_mock_devenv_init(tmp_dir, fn ->
         # Use the full Mix task to create the project
         capture_io(fn ->
+          Mix.Task.reenable("test.mock")
           Mix.Tasks.Devenv.New.run(["test.mock", project_name, "--devenv", "postgres"])
         end)
 
@@ -38,13 +39,15 @@ defmodule DevenvNewTest do
       end)
     end
 
-    test "generates correct devenv.nix for all features" do
+    test "generates correct devenv.nix for all features", %{tmp_dir: tmp_dir} do
       project_name = "test_app"
 
-      # Mock devenv init command success  
-      with_mock_devenv_init(fn ->
+      # Mock devenv init command success
+      with_mock_devenv_init(tmp_dir, fn ->
         # Use the full Mix task to create the project with all features
         capture_io(fn ->
+          Mix.Task.reenable("test.mock")
+
           Mix.Tasks.Devenv.New.run([
             "test.mock",
             project_name,
@@ -65,18 +68,26 @@ defmodule DevenvNewTest do
       end)
     end
 
-    test "handles missing project name gracefully" do
+    test "handles missing project name gracefully", %{tmp_dir: tmp_dir} do
       assert catch_exit(
-               capture_io(:stderr, fn ->
-                 Mix.Tasks.Devenv.New.run(["test.mock"])
+               # Mock devenv init command success
+               with_mock_devenv_init(tmp_dir, fn ->
+                 capture_io(:stderr, fn ->
+                   Mix.Task.reenable("test.mock")
+                   Mix.Tasks.Devenv.New.run(["test.mock"])
+                 end)
                end)
              ) == {:shutdown, 1}
     end
 
-    test "handles missing embedded task gracefully" do
+    test "handles missing embedded task gracefully", %{tmp_dir: tmp_dir} do
       assert catch_exit(
-               capture_io(:stderr, fn ->
-                 Mix.Tasks.Devenv.New.run([])
+               # Mock devenv init command success
+               with_mock_devenv_init(tmp_dir, fn ->
+                 capture_io(:stderr, fn ->
+                   Mix.Task.reenable("test.mock")
+                   Mix.Tasks.Devenv.New.run([])
+                 end)
                end)
              ) == {:shutdown, 1}
     end
@@ -102,15 +113,19 @@ defmodule DevenvNewTest do
     |> String.trim()
   end
 
-  defp with_mock_devenv_init(test_fn) do
+  defp with_mock_devenv_init(tmp_dir, test_fn) do
     # Create a mock devenv binary that always succeeds
-    mock_devenv_path = Path.join(System.tmp_dir!(), "devenv")
+    mock_devenv_path = Path.join(tmp_dir, "devenv")
 
     File.write!(mock_devenv_path, """
     #!/bin/bash
     case "$1" in
       init)
         echo "devenv initialized successfully"
+        exit 0
+        ;;
+      --version)
+        echo "devenv 1.6.1 (aarch64-darwin)"
         exit 0
         ;;
       *)

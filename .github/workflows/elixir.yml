@@ -51,5 +51,9 @@ jobs:
       run: mix ci
 
     - name: Run tests
-      run: mix test
+      run: |
+        # archive install for app `:devenv_new` to be available at runtime
+        mix archive.build
+        mix archive.install devenv_new-*.ez --force
+        mix test
 
