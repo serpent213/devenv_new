@@ -35,7 +35,7 @@ defmodule Mix.Tasks.Devenv.New do
 
                 #{feature_sections}
 
-                Features can include version specifiers, e.g., elixir=1.17
+                Features can include version specifiers, e.g. elixir=1.17
                 """
               end).()
 
@@ -86,20 +86,28 @@ defmodule Mix.Tasks.Devenv.New do
   end
 
   def run([embedded_task | argv]) do
+    ensure_devenv_available()
+
     {project_name, remaining_argv} = extract_project_name(argv)
     {devenv_options, task_argv} = extract_devenv_option(remaining_argv)
     features = parse_and_validate_devenv_options(devenv_options)
 
     Mix.shell().info("Creating project with #{embedded_task}...")
 
+    # The embedded task might leave us in cwd or in the newly generated dir – to be sure
+    # we save cwd before and work with that
+    original_path = File.cwd!()
+
     # Protection against “random” errors like:
     # (UndefinedFunctionError) function Hex.Mix.overridden_deps/1 is undefined (module Hex.Mix is not available)
     Mix.ensure_application!(:hex)
 
     Mix.Task.run(embedded_task, [project_name | task_argv])
-    # ...leaves us in the newly created directory
 
-    Mix.shell().info("Initialising devenv...")
+    # Continue in new project dir
+    File.cd!(Path.join(original_path, project_name))
+
+    Mix.shell().info("\nInitialising devenv...")
 
     case System.cmd("devenv", ["init"], stderr_to_stdout: true) do
       {_output, 0} ->
@@ -290,9 +298,11 @@ defmodule Mix.Tasks.Devenv.New do
   end
 
   defp find_template_path(category, feature_name) do
-    # :code.lib_dir/1 is the most robust way to find an app's root directory
-    # in any context (dev, deps, or mix archive).
-    case :code.lib_dir(:devenv_new) do
+    # With complex, nested embedded tasks, for some reason, sometimes this app gets unloaded – this way we
+    # can ensure `priv_dir` will run successfully
+    Mix.ensure_application!(:devenv_new)
+
+    case :code.priv_dir(:devenv_new) do
       {:error, :bad_name} ->
         raise "Could not find the :devenv_new application in the code path."
 
@@ -301,10 +311,23 @@ defmodule Mix.Tasks.Devenv.New do
         # Then, join it with "priv" and the rest of the path.
         Path.join([
           to_string(app_dir),
-          "priv",
           category,
           "#{feature_name}.eex"
         ])
+    end
+  end
+
+  defp ensure_devenv_available do
+    case System.cmd("devenv", ["--version"], stderr_to_stdout: true) do
+      {_output, 0} ->
+        :ok
+
+      {_output, _exit_code} ->
+        show_error_and_exit("""
+        devenv is not installed or not available in PATH.
+
+        Please install devenv first: https://devenv.sh/getting-started/
+        """)
     end
   end
 
