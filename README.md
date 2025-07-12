@@ -1,6 +1,14 @@
 # devenv.new
 
-A Mix task that wraps any Elixir Mix project generator in a [devenv.sh](https://devenv.sh) environment.
+![Elixir CI](https://github.com/serpent213/devenv_new/workflows/Elixir%20CI/badge.svg)
+[![License: MIT](https://img.shields.io/badge/License-0BSD-yellow.svg)](https://opensource.org/licenses/0BSD)
+[![Hex version badge](https://img.shields.io/hexpm/v/devenv_new.svg)](https://hex.pm/packages/devenv_new)
+[![Hexdocs badge](https://img.shields.io/badge/docs-hexdocs-purple)](https://hexdocs.pm/devenv_new)
+
+A Mix task that wraps any Elixir Mix project generator in a [devenv.sh](https://devenv.sh/getting-started/) environment.
+
+Note that you can [install Nix](https://nixos.org/download/) on top of macOS or most Linux distros without requiring
+a full NixOS setup.
 
 ## Installation
 
