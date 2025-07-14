@@ -40,7 +40,7 @@ nix-shell -p elixir --run 'mix devenv.new igniter.new demo_app '\
 '--with phx.new'
 
 cd demo_app
-devenv up
+devenv up # start database service(s)
 MIX_ENV=test mix ash.reset
 mix test
 ```
@@ -51,8 +51,8 @@ See [story.html](https://hexdocs.pm/devenv_new/assets/story.html) ([local](asset
 
 Available devenv features:
 
-* **elixir** - Elixir runtime (supports version specification, e.g., `elixir=1.17`)
-* **postgres** - PostgreSQL database with project-specific databases
+* **elixir** - Elixir runtime (enabled by default, supports version specification, e.g. `elixir=1.17`)
+* **postgres** - PostgreSQL database
 * **redis** - Redis cache/session store
 * **minio** - MinIO object storage (S3-compatible)
 * **npm** - Node.js runtime with npm
@@ -61,31 +61,11 @@ Available devenv features:
 The generator is built to be [easily extendable](https://github.com/serpent213/devenv_new/tree/master/priv),
 by creating an `.eex` template file and adding it to the look-up table in `devenv.new.ex`.
 
-## Examples
-
-### Phoenix with PostgreSQL and Redis
-```bash
-mix devenv.new phx.new my_phoenix_app --devenv postgres,redis
-cd my_phoenix_app
-devenv shell  # or use direnv
-```
-
-### Igniter with Ash and PostgreSQL
-```bash
-mix devenv.new igniter.new my_ash_app --devenv elixir=1.17,postgres --install ash,ash_postgres
-```
-
-### Basic Elixir Library with MinIO
-```bash
-mix devenv.new new my_lib --devenv elixir=1.17,minio --sup
-```
-
 ## How it Works
 
 1. Runs the specified Mix task (e.g., `phx.new`, `igniter.new`, `new`)
 2. Initialises devenv in the created project directory
 3. Generates `devenv.nix` with requested features
-4. Creates project-specific database configurations when applicable
 
 ## Developer Instructions
 
@@ -120,6 +100,6 @@ mix archive.uninstall devenv_new
 
 ## Requirements
 
-- Elixir/Mix installed
+- Nix environment
 - [devenv.sh](https://devenv.sh/getting-started/) installed
 - The target project generator (e.g., `phx.new`, `igniter.new`) available
