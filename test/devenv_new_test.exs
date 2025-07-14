@@ -121,7 +121,7 @@ defmodule DevenvNewTest do
     #!/bin/bash
     case "$1" in
       init)
-        echo "devenv initialized successfully"
+        echo "devenv initialised successfully"
         exit 0
         ;;
       --version)

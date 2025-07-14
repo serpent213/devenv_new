@@ -83,7 +83,7 @@ mix devenv.new new my_lib --devenv elixir=1.17,minio --sup
 ## How it Works
 
 1. Runs the specified Mix task (e.g., `phx.new`, `igniter.new`, `new`)
-2. Initializes devenv in the created project directory
+2. Initialises devenv in the created project directory
 3. Generates `devenv.nix` with requested features
 4. Creates project-specific database configurations when applicable
 

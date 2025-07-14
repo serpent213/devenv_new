@@ -111,11 +111,11 @@ defmodule Mix.Tasks.Devenv.New do
 
     case System.cmd("devenv", ["init"], stderr_to_stdout: true) do
       {_output, 0} ->
-        Mix.shell().info("devenv initialized successfully")
+        Mix.shell().info("devenv initialised successfully")
 
       {output, exit_code} ->
         show_error_and_exit("""
-        Failed to initialize devenv (exit code: #{exit_code}):
+        Failed to initialise devenv (exit code: #{exit_code}):
         #{output}
 
         Make sure devenv is installed: https://devenv.sh/getting-started/
